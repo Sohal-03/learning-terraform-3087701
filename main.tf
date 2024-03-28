@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "us-west-2"
+}
+
 data "aws_ami" "app_ami" {
   most_recent = true
 
@@ -21,4 +25,22 @@ resource "aws_instance" "blog" {
   tags = {
     Name = "HelloWorld"
   }
+}
+
+data "aws_vpc" "default" {
+  default = true
+}
+
+resource "aws_security_group" "blog" {
+  name = http
+  vpc_id = data.aws_vpc.default.id
+}
+
+resource "aws_security_group_rule" "http_in" {
+  type = "ingress"
+  from_port = 80
+  to_port = 80
+  protocol = "tcp"
+
+  security_group_id = aws_security_group.blog.id
 }
