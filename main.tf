@@ -28,7 +28,7 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_security_group" "blog" {
-  name = http
+  name = "http"
   vpc_id = data.aws_vpc.default.id
 }
 
